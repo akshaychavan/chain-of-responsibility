@@ -7,7 +7,9 @@ import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.event.EventListener;
 
 import com.example.chain_of_responsibility.service1.Order;
+import com.example.chain_of_responsibility.service1.OrderServiceSQSStepFacade;
 import com.example.chain_of_responsibility.service1.OrderStepFacade;
+import com.example.chain_of_responsibility.service1.SQSOrder;
 
 @SpringBootApplication
 public class ChainOfResponsibilityApplication {
@@ -20,7 +22,7 @@ public class ChainOfResponsibilityApplication {
 //	private EnrichmentStepFacade enrichmentStepFacade;
 
 	@Autowired
-	private OrderStepFacade orderStepFacade;
+	private OrderServiceSQSStepFacade facade;
 
 	@EventListener(ApplicationStartedEvent.class)
 	public void onStart() {
@@ -33,13 +35,13 @@ public class ChainOfResponsibilityApplication {
 //						)
 //				)
 //		));
-		System.out.println("Result order: " + orderStepFacade.process(new Order("ordr##1", 100.0, "Redeem,Settle,Refund")));
+		System.out.println("Result order: " + facade.processSQS(new SQSOrder("ordr##1", 100.0, "Redeem,Settle,Refund")));
 		System.out.println("----------------------------------------------------------------------------------");
-		System.out.println("Result order: " + orderStepFacade.process(new Order("ordr##2", 100.0, "Redeem,Cancel")));
+		System.out.println("Result order: " + facade.processSQS(new SQSOrder("ordr##2", 100.0, "Redeem,Cancel")));
 		System.out.println("----------------------------------------------------------------------------------");
-		System.out.println("Result order: " + orderStepFacade.process(new Order("ordr##3", 100.0, "Redeem,Refund")));
+		System.out.println("Result order: " + facade.processSQS(new SQSOrder("ordr##3", 100.0, "Redeem,Refund")));
 		System.out.println("----------------------------------------------------------------------------------");
-		System.out.println("Result order: " + orderStepFacade.process(new Order("ordr##4", 100.0, "Settle,Refund")));
+		System.out.println("Result order: " + facade.processSQS(new SQSOrder("ordr##4", 100.0, "Settle,Refund")));
 	}
 
 }

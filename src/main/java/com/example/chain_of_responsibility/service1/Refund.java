@@ -3,22 +3,20 @@ package com.example.chain_of_responsibility.service1;
 import org.springframework.stereotype.Service;
 
 @Service("Refund")
-//@org.springframework.core.annotation.Order(2)
-public class Refund implements OrderStep {
-	private OrderStep next;
+public class Refund implements OrderServiceSQSStep {
+	private OrderServiceSQSStep next;
 
 	@Override
-	public Order process(Order order) {
-		order.setStatus("Refund");
-		System.out.println("Inside Refund order= "+order);
-		return next.process(order);
+	public SQSOrder processSQS(SQSOrder sqsOrder) {
+		sqsOrder.setStatus("Refund");
+		System.out.println("Inside Refund order= "+sqsOrder);
+		return next.processSQS(sqsOrder);
 	}
 
 	@Override
-	public void setNextStep(OrderStep step) {
+	public void setNextStep(OrderServiceSQSStep step) {
 		this.next = step;
 	}
-	
 	
 
 }
