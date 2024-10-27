@@ -16,9 +16,9 @@ public class OrderServiceSQSStepFacade {
 	}
 
 	public SQSOrder processSQS(SQSOrder sqsOrder) {
-		List<OrderServiceSQSStep> steps = Arrays.asList(sqsOrder.getTranTypeCodes().split(",")).stream().map(code -> context.getBean(code, OrderServiceSQSStep.class)).toList();
-		this.chainHead = com.example.chain_of_responsibility.service1.ChainElement.buildChain(steps,
-				new NoOpOrderServiceSQSStep());
+		List<OrderServiceSQSStep> steps = Arrays.asList(sqsOrder.getTranTypeCodes().split(",")).stream()
+				.map(code -> context.getBean(code, OrderServiceSQSStep.class)).toList();
+		this.chainHead = ChainElement.buildChain(steps, new NoOpOrderServiceSQSStep());
 		return chainHead.processSQS(sqsOrder);
 	}
 }
